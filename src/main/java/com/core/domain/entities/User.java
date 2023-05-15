@@ -4,16 +4,17 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.UUID;
-import com.core.application.dto.user.CreateUserDTO;
 import jakarta.persistence.*;
-// import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-// import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Table(name = "users")
 @Entity(name = "users")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User {
     @Id
@@ -30,8 +31,8 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public User(CreateUserDTO data){
-        this.name = data.name();
-        this.type = data.type();
+    public User(String name, String type){
+        this.name = name;
+        this.type = type;
     }
 }
