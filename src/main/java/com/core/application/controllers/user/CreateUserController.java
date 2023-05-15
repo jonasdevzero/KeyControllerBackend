@@ -1,11 +1,6 @@
-package com.core.application.controllers;
-
-import java.util.List;
-import java.util.UUID;
+package com.core.application.controllers.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,19 +12,10 @@ import com.core.domain.repository.UserRepository;
 
 @RestController
 @RequestMapping(value = "/api")
-public class UserController {
+public class CreateUserController {
     @Autowired
     UserRepository userRepository;
-    // GET METHODS
-    @GetMapping("/user")
-    public List<User> listUsers(){
-        return userRepository.findAll();
-    }
-    @GetMapping("/user/{uuid}")
-    public User listUsers(@PathVariable (value= "uuid") UUID uuid){
-        return userRepository.findById(uuid).get();
-    }
-    // POST METHODS
+
     @PostMapping("/user")
     public User saveUser(@RequestBody User user){
         return userRepository.save(user);

@@ -3,6 +3,8 @@ package com.core.domain.entities;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ public class User {
     private LocalDateTime createAt;
     
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     public User(String name, String type){
