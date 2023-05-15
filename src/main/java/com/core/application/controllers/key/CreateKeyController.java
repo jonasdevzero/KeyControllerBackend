@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.core.domain.entities.Key;
-import com.core.domain.repository.KeyRepository;
+import com.core.domain.entities.key.Key;
+import com.core.domain.repository.key.KeyRepository;
 
 @RestController
 @RequestMapping(value = "/api")

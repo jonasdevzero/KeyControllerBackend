@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.core.domain.entities.User;
-import com.core.domain.repository.UserRepository;
+import com.core.domain.entities.user.User;
+import com.core.domain.repository.user.UserRepository;
 
 @RestController
 @RequestMapping(value = "/api")
