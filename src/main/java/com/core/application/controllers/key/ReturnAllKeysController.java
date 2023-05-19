@@ -1,8 +1,9 @@
 package com.core.application.controllers.key;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,12 +12,12 @@ import com.core.domain.repository.key.KeyRepository;
 
 @RestController
 @RequestMapping(value = "/api")
-public class CreateKeyController {
+public class ReturnAllKeysController {
     @Autowired
     KeyRepository keyRepository;
-
-    @PostMapping("/key")
-    public Key saveKey(@RequestBody Key key){
-        return keyRepository.save(key);
+    // GET METHODS
+    @GetMapping("/key")
+    public List<Key> listKeys(){
+        return keyRepository.findAll();
     }
 }

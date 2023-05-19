@@ -1,8 +1,10 @@
 package com.core.application.controllers.key;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,12 +13,12 @@ import com.core.domain.repository.key.KeyRepository;
 
 @RestController
 @RequestMapping(value = "/api")
-public class CreateKeyController {
+public class ReturnSingleKeyController {
     @Autowired
     KeyRepository keyRepository;
-
-    @PostMapping("/key")
-    public Key saveKey(@RequestBody Key key){
-        return keyRepository.save(key);
+    
+    @GetMapping("/key/{uuid}")
+    public Key listKey(@PathVariable (value= "uuid") UUID uuid){
+        return keyRepository.findById(uuid).get();
     }
 }

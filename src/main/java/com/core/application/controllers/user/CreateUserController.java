@@ -1,4 +1,4 @@
-package com.core.application.controllers.key;
+package com.core.application.controllers.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.core.domain.entities.key.Key;
-import com.core.domain.repository.key.KeyRepository;
+import com.core.domain.entities.user.User;
+import com.core.domain.repository.user.UserRepository;
 
 @RestController
 @RequestMapping(value = "/api")
-public class CreateKeyController {
+public class CreateUserController {
     @Autowired
-    KeyRepository keyRepository;
+    UserRepository userRepository;
 
-    @PostMapping("/key")
-    public Key saveKey(@RequestBody Key key){
-        return keyRepository.save(key);
+    @PostMapping("/user")
+    public User saveUser(@RequestBody User user){
+        return userRepository.save(user);
     }
 }

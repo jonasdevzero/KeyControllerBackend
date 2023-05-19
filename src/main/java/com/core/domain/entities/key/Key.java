@@ -1,6 +1,5 @@
-package com.core.domain.entities;
+package com.core.domain.entities.key;
 
-import com.core.application.dto.key.CreateKeyDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,8 +21,8 @@ public class Key {
     private UUID sectorId;
     private String number;
 
-    public Key(CreateKeyDTO data) {
-        this.sectorId = data.sectorId();
-        this.number = data.number();
+    public Key(UUID sectorId, String number) {
+        this.sectorId = sectorId;
+        this.number = number;
     }
 }
