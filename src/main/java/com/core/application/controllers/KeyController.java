@@ -1,12 +1,12 @@
 package com.core.application.controllers;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.core.application.errors.ErrorMessage;
 import com.core.domain.entities.Key;
@@ -39,10 +40,10 @@ public class KeyController {
     public Key listKey(@PathVariable (value= "id") UUID id){
         return keyRepository.findById(id).get();
     }
-
+    
+    
     @PutMapping("/key")
-    @ResponseStatus(HttpStatus.OK) //status code
-    public Object updateKey(@RequestBody Key key){
+    public Object updateKey(@RequestBody Key key) throws NotFoundException{
         Key updateKey = keyRepository.findById(key.getId()).get();
         
         updateKey.setNumber(key.getNumber());
@@ -50,17 +51,14 @@ public class KeyController {
 
         keyRepository.save(updateKey);
 
-        return updateKey;
+        return updateKey;   
     }
-
-    // @ExceptionHandler()
-    // @ResponseStatus(HttpStatus.NOT_FOUND)
-    // public Object handleException(){
-
-    //     ErrorMessage errorMessage = new ErrorMessage();
-    //     errorMessage.setMessage("Chave não encontrada");
+    // @ResponseStatus(HttpStatus.OK)
+    // @ExceptionHandler(NoSuchElementException.class)
+    // public String ppp(NoSuchElementException e){
         
-    //     return errorMessage;
+    //     return "ttt";
         
     // }
+    
 }
