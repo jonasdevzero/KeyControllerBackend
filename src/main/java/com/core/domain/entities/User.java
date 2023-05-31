@@ -1,4 +1,4 @@
-package com.core.domain.entities.user;
+package com.core.domain.entities;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     private String name;
     private String type;
@@ -34,7 +34,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public User(String name, String type){
+    public User(String id, String name, String type){
+        this.id = id;
         this.name = name;
         this.type = type;
     }
