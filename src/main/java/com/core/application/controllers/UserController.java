@@ -21,15 +21,18 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping("/user")
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@RequestBody User user)
+{
         return userRepository.save(user);
     }
     @GetMapping("/user")
-    public List<User> listUsers(){
+    public List<User> listUsers()
+{
         return userRepository.findAll();
     }
     @GetMapping("/user/{uuid}")
-    public User listUser(@PathVariable (value= "uuid") UUID uuid){
+    public User listUser(@PathVariable (value= "uuid") UUID uuid)
+{
         return userRepository.findById(uuid).get();
     }
 }
