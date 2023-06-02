@@ -2,7 +2,6 @@ package com.core.application.controllers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.ErrorManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,22 +22,22 @@ import com.core.domain.repository.KeyRepository;
 
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/")
 public class KeyController extends GlobalExceptionHandler {
     @Autowired
     KeyRepository keyRepository;
 
-    @PostMapping("/key")
+    @PostMapping("key")
     public Key save(@RequestBody Key key) {
         return keyRepository.save(key);
     }
 
-    @GetMapping("/key")
+    @GetMapping("key")
     public List<Key> list() {
         return keyRepository.findAll();
     }
 
-    @GetMapping("/key/{id}")
+    @GetMapping("key/{id}")
     public Object listUnique(@PathVariable(value = "id") UUID id) {
         if (keyRepository.existsById(id)) {
             return keyRepository.findById(id).get();
@@ -46,7 +45,7 @@ public class KeyController extends GlobalExceptionHandler {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
-    @PutMapping("/key")
+    @PutMapping("key")
     public Object update(@RequestBody Key key) {
         if (keyRepository.existsById(key.getId())) {
 
@@ -58,20 +57,12 @@ public class KeyController extends GlobalExceptionHandler {
         
     }
 
-    @DeleteMapping("/key")
+    @DeleteMapping("key")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody Key key) {
         keyRepository.deleteById(key.getId());
 
 
     }
-
-    // @ResponseStatus(HttpStatus.OK)
-    // @ExceptionHandler(NoSuchElementException.class)
-    // public String ppp(NoSuchElementException e){
-
-    // return "ttt";
-
-    // }
 
 }
