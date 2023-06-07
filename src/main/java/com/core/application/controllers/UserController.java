@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.core.application.errors.GlobalExceptionHandler;
 import com.core.domain.entities.User;
 import com.core.domain.repository.UserRepository;
-import com.core.domain.services.PostApiSuap;
-import com.core.domain.services.entidies.TokenObject;
-import com.core.domain.services.entidies.UserAuthentication;
+import com.core.services.SuapAPI;
+import com.core.services.entidies.TokenObject;
+import com.core.services.entidies.UserAuthentication;
 
 
 @RestController
@@ -25,14 +24,11 @@ public class UserController extends GlobalExceptionHandler{
     UserRepository userRepository;
     
     @Autowired
-    PostApiSuap requestToken;
-
-    @Value("${url.suap}")
-    private String url;
+    SuapAPI requestToken;
     
     @PostMapping("/authentication/token/")
     public TokenObject createCustomer(@RequestBody UserAuthentication userAuthentication) {
-        return requestToken.requestPost("/api/v2/autenticacao/token/", userAuthentication);
+        return requestToken.authentication(userAuthentication);
     }
 
     @PostMapping("/user")
