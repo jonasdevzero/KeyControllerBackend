@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.core.application.errors.GlobalExceptionHandler;
 import com.core.domain.entities.User;
 import com.core.domain.repository.UserRepository;
+import com.core.errors.GlobalExceptionHandler;
 import com.core.services.SuapAPI;
 import com.core.services.entidies.TokenObject;
 import com.core.services.entidies.UserAuthentication;

@@ -1,14 +1,15 @@
 package com.core.domain.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -17,23 +18,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "users")
-@Entity(name = "users")
-@Getter @Setter
+@Table(name = "sector")
+@Entity(name = "sector")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User implements Serializable {
-
-    @Column(name="registry", nullable = false, unique = true)
-    private String registry;
-
-    @Column(name="name", nullable = false)
+@EqualsAndHashCode(of = "id")
+public class Sector {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
     private String name;
 
-    @Column(name="type", nullable = false)
-    private String type;
-    
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createAt;
@@ -42,10 +40,7 @@ public class User implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public User(String registry, String name, String type)
-{
-        this.registry = registry;
+    public Sector(String name){
         this.name = name;
-        this.type = type;
     }
 }

@@ -1,4 +1,4 @@
-package com.core.application.errors;
+package com.core.errors;
 
 import lombok.Getter;
 import lombok.Setter;

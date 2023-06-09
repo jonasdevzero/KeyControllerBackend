@@ -15,61 +15,59 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.core.domain.entities.Key;
-import com.core.domain.repository.KeyRepository;
+import com.core.domain.entities.Sector;
+import com.core.domain.repository.SectorRepository;
 import com.core.errors.GlobalExceptionHandler;
 
 @RestController
-public class KeyController extends GlobalExceptionHandler {
-
+public class SectorController extends GlobalExceptionHandler{
+    
     @Autowired
-    KeyRepository keyRepository;
+    SectorRepository sectorRepository;
 
-    @PostMapping("/key")
+    @PostMapping("/sector")
     @ResponseStatus(HttpStatus.CREATED)
-    public Key save(@RequestBody Key key) {
+    public Sector save(@RequestBody Sector sector) {
         
-        return keyRepository.save(key);
+        return sectorRepository.save(sector);
     }
 
-    @GetMapping("/key")
-    public List<Key> list() {
+    @GetMapping("/sector")
+    public List<Sector> list() {
         
-        return keyRepository.findAll();
+        return sectorRepository.findAll();
     }
 
-    @GetMapping("/key/{id}")
+    @GetMapping("/sector/{id}")
     public Object listUnique(@PathVariable(value = "id") UUID id) {
         
-        if (keyRepository.existsById(id)) {
-            return keyRepository.findById(id).get();
+        if (sectorRepository.existsById(id)) {
+            return sectorRepository.findById(id).get();
         }
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
-    @PutMapping("/key")
-    public Object update(@RequestBody Key key) {
+    @PutMapping("/sector")
+    public Object update(@RequestBody Sector sector) {
         
-        if (keyRepository.existsById(key.getId())) {
-            if (key.getNumber() != null || key.getSectorId() != null) {
-                Key update = keyRepository.findById(key.getId()).get();
-                update.setNumber(key.getNumber() != null ? key.getNumber() : update.getNumber());
-                update.setSectorId(key.getSectorId() != null ? key.getSectorId() : update.getSectorId());
-                
-                keyRepository.save(update);
+        if (sectorRepository.existsById(sector.getId())) {
+            if(sector.getName()!=null){
+                Sector update = sectorRepository.findById(sector.getId()).get();
+
+                update.setName(sector.getName());
+                sectorRepository.save(update);
 
                 return update;
-            }
+            } 
             return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inconsistent Data");
         }
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
-    @DeleteMapping("/key")
+    @DeleteMapping("/sector")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestBody Key key) {
+    public void delete(@RequestBody Sector sector) {
         
-        keyRepository.deleteById(key.getId());
+        sectorRepository.deleteById(sector.getId());
     }
-
 }
