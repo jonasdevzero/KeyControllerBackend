@@ -1,4 +1,4 @@
-package com.core.domain.entities;
+package com.core.domain.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

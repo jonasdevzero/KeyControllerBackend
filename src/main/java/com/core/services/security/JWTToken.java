@@ -15,24 +15,41 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Service 
-public class JWTGenerator {
+public class JWTToken {
     
     @Value("${security.config.key}")
     private String secret;
+
+    @Value("${security.config.prefix}")
+    private String prefix;
+
+    @Value("${security.config.expiration}")
+    private int timeExpiration;
 
     public JWTObject generateToken(String username) {
 
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)); // não mecha nisso
 
-        JWTObject jwt = new JWTObject();
-
         String jwtToken = Jwts.builder()
                 .setSubject(username)
+                .setIssuer("Key-Controller")
                 .setIssuedAt(new Date())
                 .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date( (System.currentTimeMillis() + timeExpiration * 1000) ) )
                 .compact();
-        jwt.setToken(jwtToken);
 
+        JWTObject jwt = new JWTObject(jwtToken);
+        
         return jwt;
+    }
+
+    public void authorize(String tokenEncoded){
+        SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
+        Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(tokenEncoded.substring(prefix.length()).trim());      
+
     }
 }

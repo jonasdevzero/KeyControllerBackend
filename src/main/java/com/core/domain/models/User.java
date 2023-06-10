@@ -1,8 +1,6 @@
-package com.core.domain.entities;
+package com.core.domain.models;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,7 +21,7 @@ import lombok.Setter;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Integer id;
 
     @Column(name="registry", nullable = false, unique = true)
     private String registry;
@@ -42,6 +40,9 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public String getData(){
+        return "{\"register\":\""+getRegistry()+"\", \"name\":\" "+getName()+" \", \"type\":\""+getType()+"\" }";
+    }
     public User(String registry, String name, String type)
     {
         this.registry = registry;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.core.domain.entities.Sector;
+import com.core.domain.models.Sector;
 import com.core.domain.repository.SectorRepository;
 import com.core.errors.GlobalExceptionHandler;
 

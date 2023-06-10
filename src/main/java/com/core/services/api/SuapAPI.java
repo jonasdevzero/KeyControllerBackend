@@ -1,4 +1,4 @@
-package com.core.services;
+package com.core.services.api;
 
 import java.net.URISyntaxException;
 

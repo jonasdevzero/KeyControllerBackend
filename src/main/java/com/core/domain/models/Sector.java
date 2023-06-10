@@ -1,4 +1,4 @@
-package com.core.domain.entities;
+package com.core.domain.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

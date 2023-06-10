@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.core.errors.dto.ErrorMessage;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
+
 @Controller
 public class GlobalExceptionHandler {
     ErrorMessage errorMessage = new ErrorMessage();
@@ -29,6 +34,24 @@ public class GlobalExceptionHandler {
         errorMessage.setDetail("Credenciais inválidas");
         return errorMessage;
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(SignatureException.class)
+    public ErrorMessage wrongToken() {
+        errorMessage.setStatus(401);
+        errorMessage.setDetail("Invalid Token");
+        return errorMessage;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ErrorMessage expiredToken() {
+        errorMessage.setStatus(401);
+        errorMessage.setDetail("Expired Token");
+        return errorMessage;
+    }
+
+
     // -------------------Erro:403----------------------//
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)

@@ -1,11 +1,10 @@
 package com.core.domain.repository;
 
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.core.domain.entities.User;
+import com.core.domain.models.User;
 
-public interface UserRepository extends JpaRepository<User, String>{
+public interface UserRepository extends JpaRepository<User, Integer>{
+     
      User findByRegistry(String registry);
 }

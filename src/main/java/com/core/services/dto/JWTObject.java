@@ -7,4 +7,7 @@ import lombok.Setter;
 public class JWTObject {  
     private String token;
 
+    public JWTObject(String token){
+        this.token = token;
+    }
 }
