@@ -1,16 +1,13 @@
 package com.core.domain.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import io.micrometer.common.lang.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,8 +19,11 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User implements Serializable {
+@EqualsAndHashCode(of = "id")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
 
     @Column(name="registry", nullable = false, unique = true)
     private String registry;
@@ -43,7 +43,7 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
 
     public User(String registry, String name, String type)
-{
+    {
         this.registry = registry;
         this.name = name;
         this.type = type;

@@ -1,4 +1,4 @@
-package com.core.services.entidies;
+package com.core.services.dto;
 
 import lombok.Getter;
 import lombok.Setter;
