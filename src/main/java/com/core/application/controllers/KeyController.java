@@ -1,30 +1,23 @@
 package com.core.application.controllers;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
-import javax.crypto.SecretKey;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.core.domain.models.UserType;
+import com.core.infra.security.annotations.EnsureUserType;
+import com.core.infra.security.annotations.JwtAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.core.domain.models.Key;
 import com.core.domain.repository.KeyRepository;
-import com.core.errors.GlobalExceptionHandler;
-import com.core.services.security.JWTToken;
+import com.core.application.errors.GlobalExceptionHandler;
+import com.core.infra.security.JWT;
 
 
 @RestController
@@ -34,20 +27,20 @@ public class KeyController extends GlobalExceptionHandler {
     KeyRepository keyRepository;
 
     @Autowired
-    JWTToken jwtToken;
+    JWT jwtToken;
 
     @PostMapping("/key")
+    @JwtAuthentication
+    @EnsureUserType(UserType.SERVER)
     @ResponseStatus(HttpStatus.CREATED)
     public Key save(@RequestBody Key key) {
-
         return keyRepository.save(key);
     }
 
+
     @GetMapping("/key")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Key> list(@RequestHeader(name = "Authorization") String tokenEncoded) {
-        
-        jwtToken.authorize(tokenEncoded);
+    public List<Key> list() {
         return keyRepository.findAll();
     }
 

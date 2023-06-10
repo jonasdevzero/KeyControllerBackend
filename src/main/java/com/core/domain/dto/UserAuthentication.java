@@ -1,4 +1,4 @@
-package com.core.services.dto;
+package com.core.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

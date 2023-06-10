@@ -30,7 +30,8 @@ public class User {
     private String name;
 
     @Column(name="type", nullable = false)
-    private String type;
+    @Enumerated(EnumType.ORDINAL)
+    private UserType type;
     
     @Column(name = "created_at")
     @CreationTimestamp
@@ -40,10 +41,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public String getData(){
-        return "{\"register\":\""+getRegistry()+"\", \"name\":\" "+getName()+" \", \"type\":\""+getType()+"\" }";
-    }
-    public User(String registry, String name, String type)
+    public User(String registry, String name, UserType type)
     {
         this.registry = registry;
         this.name = name;

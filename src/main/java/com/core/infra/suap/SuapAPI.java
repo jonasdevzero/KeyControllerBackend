@@ -1,4 +1,4 @@
-package com.core.services.api;
+package com.core.infra.suap;
 
 import java.net.URISyntaxException;
 
@@ -11,31 +11,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.core.services.dto.TokenObject;
-import com.core.services.dto.UserAuthentication;
-import com.core.services.dto.userData.UserData;
+import com.core.domain.dto.suap.SuapTokens;
+import com.core.domain.dto.UserAuthentication;
+import com.core.domain.dto.suap.SuapUser;
 
 @Service
 public class SuapAPI {
-
     @Value("${url.suap}")
     private String url;
 
-
-    public TokenObject authentication (UserAuthentication request){
+    public SuapTokens login(UserAuthentication request){
         RestTemplate requestPost= new RestTemplate();
-        TokenObject userToken = requestPost.postForObject( url+"/api/v2/autenticacao/token/", request, TokenObject.class);
+        SuapTokens userToken = requestPost.postForObject( url+"/api/v2/autenticacao/token/", request, SuapTokens.class);
         return userToken;
     }
     
-    public UserData returnData (String request) throws RestClientException, URISyntaxException{
+    public SuapUser getUserData(String authToken) throws RestClientException, URISyntaxException{
         RestTemplate requestPost= new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(request);
+        headers.setBearerAuth(authToken);
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<UserData> user = requestPost.exchange( url+"/api/v2/minhas-informacoes/meus-dados/", HttpMethod.GET, requestEntity, UserData.class);
+        ResponseEntity<SuapUser> user = requestPost.exchange( url+"/api/v2/minhas-informacoes/meus-dados/", HttpMethod.GET, requestEntity, SuapUser.class);
 
         return user.getBody();
     }

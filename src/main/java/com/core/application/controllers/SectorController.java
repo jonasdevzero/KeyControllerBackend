@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.core.domain.models.Sector;
 import com.core.domain.repository.SectorRepository;
-import com.core.errors.GlobalExceptionHandler;
+import com.core.application.errors.GlobalExceptionHandler;
 
 @RestController
 public class SectorController extends GlobalExceptionHandler{
