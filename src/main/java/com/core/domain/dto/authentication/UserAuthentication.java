@@ -1,4 +1,4 @@
-package com.core.domain.dto;
+package com.core.domain.dto.authentication;
 
 import lombok.Getter;
 import lombok.Setter;

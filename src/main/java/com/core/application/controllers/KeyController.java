@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.core.domain.dto.KeyAuthentication;
+import com.core.domain.dto.authentication.KeyAuthentication;
 import com.core.domain.models.Key;
 import com.core.domain.models.Sector;
 import com.core.domain.repository.KeyRepository;
