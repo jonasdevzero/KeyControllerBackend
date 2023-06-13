@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.core.domain.dto.authentication.UserAuthentication;
 import com.core.domain.dto.suap.SuapTokens;
-import com.core.domain.dto.UserAuthentication;
 import com.core.domain.dto.suap.SuapUser;
 
 @Service

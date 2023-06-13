@@ -14,7 +14,7 @@ import com.core.domain.repository.UserRepository;
 import com.core.application.errors.GlobalExceptionHandler;
 import com.core.infra.suap.SuapAPI;
 import com.core.domain.dto.JWTObject;
-import com.core.domain.dto.UserAuthentication;
+import com.core.domain.dto.authentication.UserAuthentication;
 import com.core.domain.dto.suap.SuapUser;
 import com.core.infra.security.JWT;
 
