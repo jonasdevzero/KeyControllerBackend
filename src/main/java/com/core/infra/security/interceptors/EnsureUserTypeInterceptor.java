@@ -4,7 +4,6 @@ import com.core.domain.models.User;
 import com.core.domain.models.UserType;
 import com.core.domain.repository.UserRepository;
 import com.core.infra.security.annotations.EnsureUserType;
-import com.core.infra.security.annotations.JwtAuthentication;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,6 @@ public class EnsureUserTypeInterceptor implements HandlerInterceptor {
         if (!method.isAnnotationPresent(EnsureUserType.class)) {
             return true;
         }
-
         Object registry = request.getAttribute("registry");
 
         if (registry == null) {

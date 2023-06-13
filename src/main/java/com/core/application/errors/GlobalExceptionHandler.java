@@ -8,73 +8,64 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class GlobalExceptionHandler {
     ErrorMessage errorMessage = new ErrorMessage();
 
     // -------------------ERRO:400---------------------//
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpClientErrorException.BadRequest.class)
-    public ErrorMessage badRequestSuapAuthentication() {
-        errorMessage.setStatus(400);
-        errorMessage.setDetail("É necessário informar o login e a senha do usuário.");
-        return errorMessage;
+    public ResponseStatusException badRequestSuapAuthentication() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "É necessário informar o login e a senha do usuário.");
+    }
+    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
+    public ResponseStatusException missingData() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing Data");
     }
     // -------------------Erro:401----------------------//
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
-    public ErrorMessage unauthorizedSuapAuthentication() {
-        errorMessage.setStatus(401);
-        errorMessage.setDetail("Credenciais inválidas");
-        return errorMessage;
+    public ResponseStatusException unauthorizedSuapAuthentication() {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(SignatureException.class)
-    public ErrorMessage wrongToken() {
-        errorMessage.setStatus(401);
-        errorMessage.setDetail("Invalid Token");
-        return errorMessage;
-    }
+    // @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    // @ExceptionHandler(SignatureException.class)
+    // public ErrorMessage wrongToken() {
+    //     errorMessage.setStatus(401);
+    //     errorMessage.setDetail("Invalid Token");
+    //     return errorMessage;
+    // }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ErrorMessage expiredToken() {
-        errorMessage.setStatus(401);
-        errorMessage.setDetail("Expired Token");
-        return errorMessage;
-    }
+    // @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    // @ExceptionHandler(ExpiredJwtException.class)
+    // public ErrorMessage expiredToken() {
+    //     errorMessage.setStatus(401);
+    //     errorMessage.setDetail("Expired Token");
+    //     return errorMessage;
+    // }
 
 
     // -------------------Erro:403----------------------//
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)
-    public ErrorMessage ForbiddenSuapAuthentication() {
-        errorMessage.setStatus(403);
-        errorMessage.setDetail("Tentativas excessivas de logins. Por favor efetue o login na página inicial do suap.");
-        return errorMessage;
+    public ResponseStatusException ForbiddenSuapAuthentication() {
+        return new ResponseStatusException(HttpStatus.FORBIDDEN, "Tentativas excessivas de logins. Por favor efetue o login na página inicial do suap.");
     }
 
     // -------------------ERROR:404--------------------//
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
-    public ErrorMessage NoSuchElementException(NoSuchElementException e) {
-        errorMessage.setStatus(404);
-        errorMessage.setDetail("Data Not Found!");
-        return errorMessage;
+    public ResponseStatusException NoSuchElementException(NoSuchElementException e) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found!");
     }
 
     // -------------------ERROR:500--------------------//
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErrorMessage HttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        errorMessage.setStatus(500);
-        errorMessage.setDetail("Message Not Readable");
-        return errorMessage;
+    public ResponseStatusException HttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Message Not Readable");
     }
 
 }

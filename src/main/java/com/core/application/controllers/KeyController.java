@@ -1,21 +1,17 @@
 package com.core.application.controllers;
 
 import java.util.List;
-import java.util.UUID;
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import com.core.domain.models.UserType;
-import com.core.infra.security.annotations.EnsureUserType;
-import com.core.infra.security.annotations.JwtAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.core.domain.dto.KeyAuthentication;
 import com.core.domain.models.Key;
+import com.core.domain.models.Sector;
 import com.core.domain.repository.KeyRepository;
+import com.core.domain.repository.SectorRepository;
 import com.core.application.errors.GlobalExceptionHandler;
 import com.core.infra.security.JWT;
 
@@ -27,25 +23,34 @@ public class KeyController extends GlobalExceptionHandler {
     KeyRepository keyRepository;
 
     @Autowired
+    SectorRepository sectorRepository;
+
+    @Autowired
     JWT jwtToken;
 
     @PostMapping("/key")
-    @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    // @JwtAuthentication
+    // @EnsureUserType(UserType.SERVER)
     @ResponseStatus(HttpStatus.CREATED)
-    public Key save(@RequestBody Key key) {
-        return keyRepository.save(key);
+    public Object save(@RequestBody KeyAuthentication key) {
+        if(sectorRepository.existsById(key.getSectorId()) ){
+            Sector sector = sectorRepository.findById(key.getSectorId()).get();
+            Key dataKey = new Key(sector, key.getNumber());
+
+            dataKey.setSector(sector);
+            return keyRepository.save(dataKey);
+
+        }
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
-
     @GetMapping("/key")
-    @Produces(MediaType.APPLICATION_JSON)
     public List<Key> list() {
         return keyRepository.findAll();
     }
 
     @GetMapping("/key/{id}")
-    public Object listUnique(@PathVariable(value = "id") UUID id) {
+    public Object listUnique(@PathVariable(value = "id") Integer id) {
 
         if (keyRepository.existsById(id)) {
             return keyRepository.findById(id).get();
@@ -57,10 +62,10 @@ public class KeyController extends GlobalExceptionHandler {
     public Object update(@RequestBody Key key) {
 
         if (keyRepository.existsById(key.getId())) {
-            if (key.getNumber() != null || key.getSectorId() != null) {
+            if (key.getNumber() != null || key.getSector() != null) {
                 Key update = keyRepository.findById(key.getId()).get();
                 update.setNumber(key.getNumber() != null ? key.getNumber() : update.getNumber());
-                update.setSectorId(key.getSectorId() != null ? key.getSectorId() : update.getSectorId());
+                update.setSector(key.getSector() != null ? key.getSector() : update.getSector());
 
                 keyRepository.save(update);
 

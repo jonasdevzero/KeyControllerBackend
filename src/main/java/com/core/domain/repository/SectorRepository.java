@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.core.domain.models.Sector;
 
-public interface SectorRepository extends JpaRepository<Sector, UUID> {
+public interface SectorRepository extends JpaRepository<Sector, Integer> {
     
 }

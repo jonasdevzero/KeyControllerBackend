@@ -39,7 +39,7 @@ public class SectorController extends GlobalExceptionHandler{
     }
 
     @GetMapping("/sector/{id}")
-    public Object listUnique(@PathVariable(value = "id") UUID id) {
+    public Object listUnique(@PathVariable(value = "id") Integer id) {
         
         if (sectorRepository.existsById(id)) {
             return sectorRepository.findById(id).get();

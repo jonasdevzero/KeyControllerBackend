@@ -1,33 +1,42 @@
 package com.core.domain.models;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+@Getter @Setter
+@Entity
 @Table(name = "key")
-@Entity(name = "key")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Key {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private UUID sectorId;
-    private String number;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     
-    @Column(name = "created_at")
+    private String number;
+
+    @OneToOne
+    @JoinColumn(name = "sectorId", referencedColumnName = "id")
+    private Sector sector;
+    
+    @Column (name = "created_at")
     @CreationTimestamp
     private LocalDateTime createAt;
     
@@ -35,8 +44,8 @@ public class Key {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Key(UUID sectorId, String number) {
-        this.sectorId = sectorId;
+    public Key(Sector sectorId, String number) {
+        this.sector = sectorId;
         this.number = number;
     }
 }

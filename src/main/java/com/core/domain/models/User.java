@@ -20,9 +20,6 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "id")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
-
     @Column(name="registry", nullable = false, unique = true)
     private String registry;
 
