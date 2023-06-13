@@ -8,4 +8,5 @@ public class SuapUser {
     private int id;
     private String matricula;
     private String nome_usual;
+    private String tipo_vinculo;
 }

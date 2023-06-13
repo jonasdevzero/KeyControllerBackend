@@ -33,19 +33,23 @@ public class KeyController extends GlobalExceptionHandler {
     // @EnsureUserType(UserType.SERVER)
     @ResponseStatus(HttpStatus.CREATED)
     public Object save(@RequestBody KeyAuthentication key) {
-        if(sectorRepository.existsById(key.getSectorId()) ){
-            Sector sector = sectorRepository.findById(key.getSectorId()).get();
-            Key dataKey = new Key(sector, key.getNumber());
+        
+        if( key.getSectorId() != null && key.getNumber() != null ){
+            if(sectorRepository.existsById(key.getSectorId())){
+                Sector sector = sectorRepository.findById(key.getSectorId()).get();
+                Key dataKey = new Key(sector, key.getNumber());
 
-            dataKey.setSector(sector);
-            return keyRepository.save(dataKey);
-
+                dataKey.setSector(sector);
+                return keyRepository.save(dataKey);
+            }
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
         }
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inconsistent Data");
     }
 
     @GetMapping("/key")
     public List<Key> list() {
+
         return keyRepository.findAll();
     }
 

@@ -26,9 +26,12 @@ public class SectorController extends GlobalExceptionHandler{
 
     @PostMapping("/sector")
     @ResponseStatus(HttpStatus.CREATED)
-    public Sector save(@RequestBody Sector sector) {
+    public Object save(@RequestBody Sector sector) {
         
-        return sectorRepository.save(sector);
+        if( sector.getName() != null ){
+            return sectorRepository.save(sector);
+        }
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inconsistent Data");
     }
 
     @GetMapping("/sector")

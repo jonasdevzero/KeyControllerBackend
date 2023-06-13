@@ -25,8 +25,9 @@ public class User {
     private String name;
 
     @Column(name="type", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private UserType type;
+    private Byte type;
+    // @Enumerated(EnumType.ORDINAL)
+    // private UserType type;
     
     @Column(name = "created_at")
     @CreationTimestamp
@@ -36,7 +37,14 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public User(String registry, String name, UserType type)
+    public Byte typeUser(String type){
+        if(type.equals("Servidor")){
+            return 1;
+        }
+        return 0;
+    }
+
+    public User(String registry, String name, Byte type)
     {
         this.registry = registry;
         this.name = name;

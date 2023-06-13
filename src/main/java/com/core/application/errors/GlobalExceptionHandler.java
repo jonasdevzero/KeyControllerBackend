@@ -19,15 +19,15 @@ public class GlobalExceptionHandler {
     public ResponseStatusException badRequestSuapAuthentication() {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "É necessário informar o login e a senha do usuário.");
     }
-    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
-    public ResponseStatusException missingData() {
-        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing Data");
-    }
+    // @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    // public ResponseStatusException missingData() {
+    //     return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inconsistent Data");
+    // }
     // -------------------Erro:401----------------------//
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
     public ResponseStatusException unauthorizedSuapAuthentication() {
-        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
+        return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
     }
 
     // @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -48,23 +48,20 @@ public class GlobalExceptionHandler {
 
 
     // -------------------Erro:403----------------------//
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)
     public ResponseStatusException ForbiddenSuapAuthentication() {
         return new ResponseStatusException(HttpStatus.FORBIDDEN, "Tentativas excessivas de logins. Por favor efetue o login na página inicial do suap.");
     }
 
     // -------------------ERROR:404--------------------//
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseStatusException NoSuchElementException(NoSuchElementException e) {
+    public ResponseStatusException NoSuchElement(NoSuchElementException e) {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found!");
     }
 
     // -------------------ERROR:500--------------------//
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseStatusException HttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ResponseStatusException HttpMessageNotReadable(HttpMessageNotReadableException e) {
         return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Message Not Readable");
     }
 
