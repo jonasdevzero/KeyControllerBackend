@@ -25,9 +25,9 @@ public class User {
     private String name;
 
     @Column(name="type", nullable = false)
-    private Byte type;
-    // @Enumerated(EnumType.ORDINAL)
-    // private UserType type;
+    // private Byte type;
+    @Enumerated(EnumType.ORDINAL)
+    private UserType type;
     
     @Column(name = "created_at")
     @CreationTimestamp
@@ -44,7 +44,7 @@ public class User {
         return 0;
     }
 
-    public User(String registry, String name, Byte type)
+    public User(String registry, String name, UserType type)
     {
         this.registry = registry;
         this.name = name;

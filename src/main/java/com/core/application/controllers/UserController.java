@@ -38,12 +38,12 @@ public class UserController extends GlobalExceptionHandler {
         User userExists = this.userRepository.findByRegistry(user.getMatricula());
 
         if (userExists == null) {
-            // UserType userType = user.getMatricula().length() == 14 ? UserType.STUDENT : UserType.SERVER;
+            UserType userType = user.getMatricula().length() == 14 ? UserType.STUDENT : UserType.SERVER;
             
-            User newUser = new User();
-            newUser.setName(user.getNome_usual());
-            newUser.setRegistry(user.getMatricula());
-            newUser.setType(newUser.typeUser(user.getTipo_vinculo()));
+            User newUser = new User(user.getMatricula(),user.getNome_usual() , userType);
+            // newUser.setName(user.getNome_usual());
+            // newUser.setRegistry(user.getMatricula());
+            // newUser.setType(newUser.typeUser(user.getTipo_vinculo()));
 
             this.userRepository.save(newUser);
         }
