@@ -32,14 +32,19 @@ public class KeyController extends GlobalExceptionHandler {
     // @JwtAuthentication
     // @EnsureUserType(UserType.SERVER)
     @ResponseStatus(HttpStatus.CREATED)
-    public Object save(@RequestBody KeyAuthentication key) {
-        
-        if( key.getSectorId() != null && key.getNumber() != null ){
-            if(sectorRepository.existsById(key.getSectorId())){
-                Sector sector = sectorRepository.findById(key.getSectorId()).get();
-                Key dataKey = new Key(sector, key.getNumber());
+    public Object save(@RequestBody Key key) {
 
-                dataKey.setSector(sector);
+        Integer sectorId = key.getSector().getId();
+        String keyNumber = key.getNumber();
+       
+        if( sectorId != null && 
+            keyNumber != null   ){
+
+            if(sectorRepository.existsById(sectorId)){
+                
+                Sector sector = sectorRepository.findById(sectorId).get();
+                Key dataKey = new Key(sector, key.getNumber());
+                // dataKey.setSector(sector);
                 return keyRepository.save(dataKey);
             }
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
@@ -65,12 +70,23 @@ public class KeyController extends GlobalExceptionHandler {
     @PutMapping("/key")
     public Object update(@RequestBody Key key) {
 
-        if (keyRepository.existsById(key.getId())) {
-            if (key.getNumber() != null || key.getSector() != null) {
-                Key update = keyRepository.findById(key.getId()).get();
-                update.setNumber(key.getNumber() != null ? key.getNumber() : update.getNumber());
-                update.setSector(key.getSector() != null ? key.getSector() : update.getSector());
+        Integer sectorId = key.getSector().getId();
+        String keyNumber = key.getNumber();        
+        Integer keyId = key.getId();
 
+       
+        if (keyRepository.existsById(keyId)) {
+
+            if (    keyNumber != null || 
+                    key.getSector() != null ||
+                    sectorRepository.existsById(sectorId)   ) {
+
+                Key update = keyRepository.findById(key.getId()).get();
+                Sector sector = sectorRepository.findById(sectorId).get();
+                
+                update.setNumber(key.getNumber() != null ? key.getNumber() : update.getNumber());
+                update.setSector(sector);
+                
                 keyRepository.save(update);
 
                 return update;

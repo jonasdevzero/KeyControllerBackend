@@ -1,16 +1,9 @@
 package com.core.domain.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,23 +13,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 @Entity
-@Table(name = "key")
+@Table(name="schedule")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Key {
+public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
-    private String number;
 
-    @OneToOne
-    @JoinColumn(name = "sectorId", referencedColumnName = "id")
-    // @JsonIgnore
-    private Sector sector;
+    private boolean caught;
+    private LocalDateTime acquisitionDate;    
+    private LocalDateTime devolutionDate; 
     
     @Column (name = "created_at")
     @CreationTimestamp
@@ -46,8 +40,17 @@ public class Key {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Key(Sector sectorId, String number) {
-        this.sector = sectorId;
-        this.number = number;
-    }
+    //@Column(name = "delete_at")
+    // private LocalDateTime updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "keyId", referencedColumnName = "id")
+    private Key key;
+
+    @OneToOne
+    @JoinColumn(name = "userId", referencedColumnName = "registry")
+    private User user;
+
+
+ 
 }
