@@ -51,6 +51,13 @@ public class Schedule {
     @JoinColumn(name = "userId", referencedColumnName = "registry")
     private User user;
 
+    public Schedule(boolean caught, LocalDateTime acquisitionDate, LocalDateTime devolutionDate, Key key, User user){
+        this.caught = caught;
+        this.acquisitionDate = acquisitionDate;
+        this.devolutionDate = devolutionDate;
+        this.key = key;
+        this.user = user;
+    }
 
  
 }

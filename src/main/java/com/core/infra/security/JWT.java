@@ -16,9 +16,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-@Service 
+@Service
 public class JWT {
-    
+
     @Value("${security.config.key}")
     private String secret;
 
@@ -36,13 +36,13 @@ public class JWT {
                 .setIssuer("Key-Controller")
                 .setIssuedAt(new Date())
                 .signWith(key, SignatureAlgorithm.HS256)
-                .setExpiration(new Date( (System.currentTimeMillis() + timeExpiration * 1000L) ) )
+                .setExpiration(new Date((System.currentTimeMillis() + timeExpiration * 1000L)))
                 .compact();
 
         return new JWTObject(jwtToken);
     }
 
-    public String authorize(String tokenEncoded){
+    public String authorize(String tokenEncoded) {
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
         Jws<Claims> decoded = Jwts.parserBuilder()

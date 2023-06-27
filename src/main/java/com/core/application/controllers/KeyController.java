@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.core.domain.dto.authentication.KeyAuthentication;
 import com.core.domain.models.Key;
 import com.core.domain.models.Sector;
 import com.core.domain.repository.KeyRepository;
@@ -37,9 +36,7 @@ public class KeyController extends GlobalExceptionHandler {
         Integer sectorId = key.getSector().getId();
         String keyNumber = key.getNumber();
        
-        if( sectorId != null && 
-            keyNumber != null   ){
-
+        if(sectorId != null && keyNumber != null){
             if(sectorRepository.existsById(sectorId)){
                 
                 Sector sector = sectorRepository.findById(sectorId).get();
@@ -77,9 +74,7 @@ public class KeyController extends GlobalExceptionHandler {
        
         if (keyRepository.existsById(keyId)) {
 
-            if (    keyNumber != null || 
-                    key.getSector() != null ||
-                    sectorRepository.existsById(sectorId)   ) {
+            if (keyNumber != null || key.getSector() != null || sectorRepository.existsById(sectorId)   ) {
 
                 Key update = keyRepository.findById(key.getId()).get();
                 Sector sector = sectorRepository.findById(sectorId).get();
