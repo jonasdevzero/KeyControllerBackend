@@ -6,6 +6,9 @@ import lombok.Setter;
 @Getter @Setter
 public class ApproveKey {
   
+    private Integer scheduleId;    
     private Integer keyId;
-    private boolean approve;
+    private Boolean approve;
+
+    
 }

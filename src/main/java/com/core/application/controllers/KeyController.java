@@ -40,7 +40,7 @@ public class KeyController extends GlobalExceptionHandler {
             if(sectorRepository.existsById(sectorId)){
                 
                 Sector sector = sectorRepository.findById(sectorId).get();
-                Key dataKey = new Key(sector, key.getNumber());
+                Key dataKey = new Key(sector, keyNumber);
                 // dataKey.setSector(sector);
                 return keyRepository.save(dataKey);
             }

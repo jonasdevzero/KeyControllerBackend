@@ -27,8 +27,9 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    private boolean caught;
+    
+    // @Column(nullable = false)
+    private Boolean caught;
     private LocalDateTime acquisitionDate;    
     private LocalDateTime devolutionDate; 
     
@@ -51,7 +52,7 @@ public class Schedule {
     @JoinColumn(name = "userId", referencedColumnName = "registry")
     private User user;
 
-    public Schedule(boolean caught, LocalDateTime acquisitionDate, LocalDateTime devolutionDate, Key key, User user){
+    public Schedule(Boolean caught, LocalDateTime acquisitionDate, LocalDateTime devolutionDate, Key key, User user){
         this.caught = caught;
         this.acquisitionDate = acquisitionDate;
         this.devolutionDate = devolutionDate;
