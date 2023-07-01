@@ -28,7 +28,7 @@ public class KeyRegister {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private boolean returned;
+    private Boolean returned;
     private LocalDateTime acquisitionDate;    
     private LocalDateTime devolutionDate; 
     
@@ -50,5 +50,13 @@ public class KeyRegister {
     @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "registry")
     private User user;
+
+    public KeyRegister(Boolean returned, LocalDateTime acquisitionDate, LocalDateTime devolutionDate, User user, Key key){
+        this.returned = returned;
+        this.acquisitionDate = acquisitionDate;
+        this.devolutionDate = devolutionDate;
+        this.user = user;
+        this.key = key;
+    }
 
 }

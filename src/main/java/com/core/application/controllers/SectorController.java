@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.core.domain.models.Sector;
+import com.core.domain.models.UserType;
 import com.core.domain.repository.SectorRepository;
+import com.core.infra.security.annotations.EnsureUserType;
+import com.core.infra.security.annotations.JwtAuthentication;
 import com.core.application.errors.GlobalExceptionHandler;
 
 @RestController
@@ -24,6 +27,8 @@ public class SectorController extends GlobalExceptionHandler{
     @Autowired
     SectorRepository sectorRepository;
 
+    @JwtAuthentication
+    @EnsureUserType(UserType.SERVER)
     @PostMapping("/sector")
     @ResponseStatus(HttpStatus.CREATED)
     public Object save(@RequestBody Sector sector) {
@@ -49,6 +54,8 @@ public class SectorController extends GlobalExceptionHandler{
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
+    @JwtAuthentication
+    @EnsureUserType(UserType.SERVER)
     @PutMapping("/sector")
     public Object update(@RequestBody Sector sector) {
         
@@ -66,6 +73,8 @@ public class SectorController extends GlobalExceptionHandler{
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
 
+    @JwtAuthentication
+    @EnsureUserType(UserType.SERVER)
     @DeleteMapping("/sector")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody Sector sector) {
