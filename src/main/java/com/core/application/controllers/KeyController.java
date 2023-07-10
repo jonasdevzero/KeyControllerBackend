@@ -1,5 +1,6 @@
 package com.core.application.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import com.core.application.errors.GlobalExceptionHandler;
 import com.core.infra.security.JWT;
 import com.core.infra.security.annotations.EnsureUserType;
 import com.core.infra.security.annotations.JwtAuthentication;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -100,9 +103,12 @@ public class KeyController extends GlobalExceptionHandler {
     @EnsureUserType(UserType.SERVER)
     @DeleteMapping("/key")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestBody Key key) {
-
-        keyRepository.deleteById(key.getId());
+    public void delete(@RequestBody Key key, HttpServletResponse response) throws IOException{
+        if(keyRepository.existsById(key.getId())){
+            keyRepository.deleteById(key.getId());
+        }else {
+            response.sendError(HttpStatus.NOT_FOUND.value(), "Data Not Found");
+        }
     }
 
 }

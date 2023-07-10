@@ -16,7 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Getter @Setter
@@ -28,18 +28,18 @@ public class Key {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
+
     private String number;
 
-    @OneToOne
-    @JoinColumn(name = "sectorId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "sectorId", referencedColumnName = "id", nullable = false)
     // @JsonIgnore
     private Sector sector;
-    
+
     @Column (name = "created_at")
     @CreationTimestamp
     private LocalDateTime createAt;
-    
+
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;

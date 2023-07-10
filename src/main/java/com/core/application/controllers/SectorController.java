@@ -1,6 +1,9 @@
 package com.core.application.controllers;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,8 +80,11 @@ public class SectorController extends GlobalExceptionHandler{
     @EnsureUserType(UserType.SERVER)
     @DeleteMapping("/sector")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestBody Sector sector) {
-        
-        sectorRepository.deleteById(sector.getId());
+    public void delete(@RequestBody Sector sector, HttpServletResponse response) throws IOException{
+        if(sectorRepository.existsById(sector.getId())){
+            sectorRepository.deleteById(sector.getId());
+        }else{
+            response.sendError(HttpStatus.NOT_FOUND.value(), "Data Not Found");
+        }
     }
 }
