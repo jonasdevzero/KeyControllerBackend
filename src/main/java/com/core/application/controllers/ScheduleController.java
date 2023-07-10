@@ -99,7 +99,7 @@ public class ScheduleController extends GlobalExceptionHandler {
                 if (currentUser.getType() == UserType.SERVER) {
 
                     boolean inUse = false;
-                    // verifica se existe alguma chave que está sendo utilizada
+                    // verifica se existe alguma chave que está sendo utilizada, no caso que a chave não for devolvida
                     List<KeyRegister> listKeyRegisters = keyRegisterRepository.findAll();
                     for (KeyRegister item : listKeyRegisters) {
                         inUse = (!item.getReturned() && item.getKey().getNumber() == key.getNumber()) ? true: false;
