@@ -41,10 +41,10 @@ public class KeyController extends GlobalExceptionHandler {
 
         Integer sectorId = key.getSector().getId();
         String keyNumber = key.getNumber();
-       
+
         if(sectorId != null && keyNumber != null){
             if(sectorRepository.existsById(sectorId)){
-                
+
                 Sector sector = sectorRepository.findById(sectorId).get();
                 Key dataKey = new Key(sector, keyNumber);
                 // dataKey.setSector(sector);
@@ -76,20 +76,20 @@ public class KeyController extends GlobalExceptionHandler {
     public Object update(@RequestBody Key key) {
 
         Integer sectorId = key.getSector().getId();
-        String keyNumber = key.getNumber();        
+        String keyNumber = key.getNumber();
         Integer keyId = key.getId();
 
-       
+
         if (keyRepository.existsById(keyId)) {
 
             if (keyNumber != null || key.getSector() != null || sectorRepository.existsById(sectorId)   ) {
 
                 Key update = keyRepository.findById(key.getId()).get();
                 Sector sector = sectorRepository.findById(sectorId).get();
-                
+
                 update.setNumber(key.getNumber() != null ? key.getNumber() : update.getNumber());
                 update.setSector(sector);
-                
+
                 keyRepository.save(update);
 
                 return update;
@@ -98,7 +98,7 @@ public class KeyController extends GlobalExceptionHandler {
         }
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
     }
-    
+
     @JwtAuthentication
     @EnsureUserType(UserType.SERVER)
     @DeleteMapping("/key")

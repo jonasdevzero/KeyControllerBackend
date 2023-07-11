@@ -158,8 +158,7 @@ public class ScheduleController extends GlobalExceptionHandler {
 
             scheduleRepository.save(schedule);
 
-            KeyRegister keyRegister = new KeyRegister(idKey, false, acquisition, devolution, acquisition, devolution,
-                    key, user);
+            KeyRegister keyRegister = new KeyRegister(idKey, null, acquisition, devolution, devolution, acquisition, null, key, user);
 
             keyRegisterRepository.save(keyRegister);
 

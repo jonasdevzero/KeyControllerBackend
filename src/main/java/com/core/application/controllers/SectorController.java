@@ -1,6 +1,7 @@
 package com.core.application.controllers;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ import com.core.application.errors.GlobalExceptionHandler;
 
 @RestController
 public class SectorController extends GlobalExceptionHandler{
-    
+
     @Autowired
     SectorRepository sectorRepository;
 
@@ -35,7 +36,7 @@ public class SectorController extends GlobalExceptionHandler{
     @PostMapping("/sector")
     @ResponseStatus(HttpStatus.CREATED)
     public Object save(@RequestBody Sector sector) {
-        
+
         if( sector.getName() != null ){
             return sectorRepository.save(sector);
         }
@@ -44,13 +45,13 @@ public class SectorController extends GlobalExceptionHandler{
 
     @GetMapping("/sector")
     public List<Sector> list() {
-        
+
         return sectorRepository.findAll();
     }
 
     @GetMapping("/sector/{id}")
     public Object listUnique(@PathVariable(value = "id") Integer id) {
-        
+
         if (sectorRepository.existsById(id)) {
             return sectorRepository.findById(id).get();
         }
@@ -61,7 +62,7 @@ public class SectorController extends GlobalExceptionHandler{
     @EnsureUserType(UserType.SERVER)
     @PutMapping("/sector")
     public Object update(@RequestBody Sector sector) {
-        
+
         if (sectorRepository.existsById(sector.getId())) {
             if(sector.getName()!=null){
                 Sector update = sectorRepository.findById(sector.getId()).get();
@@ -70,7 +71,7 @@ public class SectorController extends GlobalExceptionHandler{
                 sectorRepository.save(update);
 
                 return update;
-            } 
+            }
             return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inconsistent Data");
         }
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
@@ -82,7 +83,9 @@ public class SectorController extends GlobalExceptionHandler{
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody Sector sector, HttpServletResponse response) throws IOException{
         if(sectorRepository.existsById(sector.getId())){
-            sectorRepository.deleteById(sector.getId());
+            Sector sectorData = sectorRepository.findById(sector.getId()).get();
+            sectorData.setDeleteAt(LocalDateTime.now());
+            sectorRepository.save(sectorData);
         }else{
             response.sendError(HttpStatus.NOT_FOUND.value(), "Data Not Found");
         }

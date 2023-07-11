@@ -3,7 +3,9 @@ package com.core.domain.models;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,25 +25,27 @@ import lombok.Setter;
 @Table(name="keyRegister")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE keyRegister SET deleted_at=CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null ")
 public class KeyRegister {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private Boolean returned;
-    private LocalDateTime acquisitionDate;    
-    private LocalDateTime devolutionDate; 
-    
+    private LocalDateTime acquisitionDate;
+    private LocalDateTime devolutionDate;
+
     @Column (name = "created_at")
     @CreationTimestamp
     private LocalDateTime createAt;
-    
+
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    //@Column(name = "delete_at")
-    // private LocalDateTime updatedAt;
+    @Column(name = "deleted_at")
+    private LocalDateTime deleteAt;
 
     @OneToOne
     @JoinColumn(name = "keyId", referencedColumnName = "id")

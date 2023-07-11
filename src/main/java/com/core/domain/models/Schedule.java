@@ -3,7 +3,9 @@ package com.core.domain.models;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +25,8 @@ import lombok.Setter;
 @Table(name="schedule")
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE schedule SET deleted_at=CURRENT_TIMESTAMP WHERE id=?")
+@Where(clause = "deleted_at is null ")
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,8 +45,8 @@ public class Schedule {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    //@Column(name = "delete_at")
-    // private LocalDateTime updatedAt;
+    @Column(name = "deleted_at")
+    private LocalDateTime deleteAt;
 
     @ManyToOne
     @JoinColumn(name = "keyId", referencedColumnName = "id", nullable = false)
