@@ -2,6 +2,8 @@ package com.core.application.controllers;
 
 import java.net.URISyntaxException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.core.domain.models.User;
 import com.core.domain.dto.suap.SuapTokens;
 import com.core.domain.models.UserType;
@@ -13,6 +15,9 @@ import org.springframework.web.client.RestClientException;
 import com.core.domain.repository.UserRepository;
 import com.core.application.errors.GlobalExceptionHandler;
 import com.core.infra.suap.SuapAPI;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.core.domain.dto.JWTObject;
 import com.core.domain.dto.authentication.UserAuthentication;
 import com.core.domain.dto.suap.SuapUser;
@@ -20,10 +25,10 @@ import com.core.infra.security.JWT;
 
 @RestController
 public class UserController extends GlobalExceptionHandler {
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     JWT jwt;
 
@@ -39,7 +44,7 @@ public class UserController extends GlobalExceptionHandler {
 
         if (userExists == null) {
             UserType userType = user.getMatricula().length() == 14 ? UserType.STUDENT : UserType.SERVER;
-            
+
             User newUser = new User(user.getMatricula(),user.getNome_usual() , userType);
             // newUser.setName(user.getNome_usual());
             // newUser.setRegistry(user.getMatricula());
@@ -53,8 +58,8 @@ public class UserController extends GlobalExceptionHandler {
 
     @GetMapping("/user/data")
     @JwtAuthentication
-    public User getData(@RequestAttribute("registry") String registry) {
-         return userRepository.findByRegistry(registry);
+    public User getData(HttpServletRequest request) {
+         return userRepository.findByRegistry(request.getAttribute("registry").toString());
     }
 
     // @PostMapping("/user")

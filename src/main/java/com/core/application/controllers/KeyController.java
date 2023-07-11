@@ -35,7 +35,7 @@ public class KeyController extends GlobalExceptionHandler {
 
     @PostMapping("/key")
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @ResponseStatus(HttpStatus.CREATED)
     public Object save(@RequestBody Key key) {
 
@@ -71,7 +71,7 @@ public class KeyController extends GlobalExceptionHandler {
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @PutMapping("/key")
     public Object update(@RequestBody Key key) {
 
@@ -100,7 +100,7 @@ public class KeyController extends GlobalExceptionHandler {
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @DeleteMapping("/key")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody Key key, HttpServletResponse response) throws IOException{

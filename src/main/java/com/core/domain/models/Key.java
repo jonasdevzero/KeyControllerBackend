@@ -29,6 +29,7 @@ import jakarta.persistence.Table;
 @SQLDelete(sql = "UPDATE key SET deleted_at=CURRENT_TIMESTAMP WHERE id=?")
 @Where(clause = "deleted_at is null ")
 public class Key {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

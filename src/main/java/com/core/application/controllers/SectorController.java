@@ -32,7 +32,7 @@ public class SectorController extends GlobalExceptionHandler{
     SectorRepository sectorRepository;
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @PostMapping("/sector")
     @ResponseStatus(HttpStatus.CREATED)
     public Object save(@RequestBody Sector sector) {
@@ -59,7 +59,7 @@ public class SectorController extends GlobalExceptionHandler{
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @PutMapping("/sector")
     public Object update(@RequestBody Sector sector) {
 
@@ -78,7 +78,7 @@ public class SectorController extends GlobalExceptionHandler{
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @DeleteMapping("/sector")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody Sector sector, HttpServletResponse response) throws IOException{

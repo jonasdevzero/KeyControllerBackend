@@ -2,7 +2,8 @@ package com.core.domain.models;
 
 public enum UserType {
     STUDENT("student"),
-    SERVER("server");
+    SERVER("server"),
+    MANAGER("manager");
 
     private final String type;
 

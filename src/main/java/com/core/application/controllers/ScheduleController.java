@@ -79,32 +79,32 @@ public class ScheduleController extends GlobalExceptionHandler {
 
         User currentUser = userRepository.findByRegistry(registry);
 
-        LocalDateTime ss = null;
         boolean dateNotInUse = false;
-
 
         // verificar se as datas já estão sendo utilizadas
         List<Schedule> listSchedules = scheduleRepository.findByKey(key);
         for (Schedule item : listSchedules) {
-            dateNotInUse = (item.getDevolutionDate().compareTo(devolution) == item.getAcquisitionDate().compareTo(acquisition)
+            dateNotInUse = (item.getDevolutionDate().compareTo(devolution) == item.getAcquisitionDate()
+                    .compareTo(acquisition)
                     && item.getDevolutionDate().compareTo(devolution) > item.getAcquisitionDate().compareTo(acquisition)
                     && item.getDevolutionDate().compareTo(devolution) != 0
                     && item.getAcquisitionDate().compareTo(acquisition) != 0) ? true : false;
         }
         // return dateNotInUse.toString();
-        if(dateNotInUse){
+        if (dateNotInUse) {
             if (acquisition != null && devolution != null) {
 
                 Schedule data = new Schedule(null, acquisition, devolution, key, user);
                 if (currentUser.getType() == UserType.SERVER) {
 
                     boolean inUse = false;
-                    // verifica se existe alguma chave que está sendo utilizada, no caso que a chave não for devolvida
+                    // verifica se existe alguma chave que está sendo utilizada, no caso que a chave
+                    // não for devolvida
                     List<KeyRegister> listKeyRegisters = keyRegisterRepository.findAll();
                     for (KeyRegister item : listKeyRegisters) {
-                        inUse = (!item.getReturned() && item.getKey().getNumber() == key.getNumber()) ? true: false;
+                        inUse = (!item.getReturned() && item.getKey().getNumber() == key.getNumber()) ? true : false;
                     }
-                    if (schedule.getCaught()!=null && schedule.getCaught() && !inUse) {
+                    if (schedule.getCaught() != null && schedule.getCaught() && !inUse) {
 
                         data.setCaught(schedule.getCaught());
                         KeyRegister keyRegister = new KeyRegister(false, acquisition, devolution, user, key);
@@ -112,14 +112,17 @@ public class ScheduleController extends GlobalExceptionHandler {
                     } else {
                         data.setCaught(false);
                     }
-                } return scheduleRepository.save(data);
-            } return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
-        } return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date Is Being Used");
+                }
+                return scheduleRepository.save(data);
+            }
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Data Not Found");
+        }
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date Is Being Used");
 
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    @EnsureUserType(UserType.MANAGER)
     @PostMapping("/key/register/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approve(@RequestBody ApproveKey approveKey) {
@@ -139,7 +142,7 @@ public class ScheduleController extends GlobalExceptionHandler {
     }
 
     @JwtAuthentication
-    @EnsureUserType(UserType.SERVER)
+    // @EnsureUserType(UserType.SERVER)
     @PostMapping("/key/register/{id}/confirm")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void confirmSchedule(@PathVariable(value = "id") Integer id, HttpServletResponse response)
@@ -158,7 +161,8 @@ public class ScheduleController extends GlobalExceptionHandler {
 
             scheduleRepository.save(schedule);
 
-            KeyRegister keyRegister = new KeyRegister(idKey, null, acquisition, devolution, devolution, acquisition, null, key, user);
+            KeyRegister keyRegister = new KeyRegister(idKey, false, acquisition, devolution, devolution, acquisition,
+                    null, key, user);
 
             keyRegisterRepository.save(keyRegister);
 
@@ -177,7 +181,7 @@ public class ScheduleController extends GlobalExceptionHandler {
         if (scheduleRepository.existsById(id)) {
 
             Schedule data = scheduleRepository.findById(id).get();
-            if (data.getUser().getRegistry().equals(registry) || data.getUser().getType() == UserType.SERVER) {
+            if (data.getUser().getRegistry().equals(registry) || data.getUser().getType() == UserType.MANAGER) {
 
                 scheduleRepository.deleteById(id);
             } else {
@@ -189,4 +193,51 @@ public class ScheduleController extends GlobalExceptionHandler {
         }
     }
 
+    @JwtAuthentication
+    @DeleteMapping("/key/{id}/return")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void returnKey(@PathVariable(value = "id") Integer id, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+
+        String registry = request.getAttribute("registry").toString();
+        if (keyRegisterRepository.existsById(id)) {
+
+            KeyRegister data = keyRegisterRepository.findById(id).get();
+            if ((data.getUser().getRegistry().equals(registry) || data.getUser().getType() == UserType.MANAGER)
+                    && !data.getReturned()) {
+
+                data.setReturned(null);
+                keyRegisterRepository.save(data);
+            } else {
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), "User Unauthorized");
+            }
+        } else {
+            response.sendError(HttpStatus.NOT_FOUND.value(), "Data Not Found");
+        }
+    }
+
+    @JwtAuthentication
+    @EnsureUserType(UserType.MANAGER)
+    @DeleteMapping("/key/{id}/confirm-return")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void returnKeyConfirm(@PathVariable(value = "id") Integer id, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+
+        String registry = request.getAttribute("registry").toString();
+        if (keyRegisterRepository.existsById(id)) {
+
+            KeyRegister data = keyRegisterRepository.findById(id).get();
+            if ((data.getUser().getRegistry().equals(registry) || data.getUser().getType() == UserType.MANAGER)
+                    && data.getReturned() == null) {
+
+                data.setReturned(true);
+                keyRegisterRepository.save(data);
+
+            } else{
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), "User Unauthorized");
+            }
+        } else {
+            response.sendError(HttpStatus.NOT_FOUND.value(), "Data Not Found");
+        }
+    }
 }
